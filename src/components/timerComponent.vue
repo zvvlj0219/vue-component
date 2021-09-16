@@ -43,7 +43,7 @@
     <div 
       class="pause_btn"
       v-show="active"
-      v-on:click="active = !active"
+      v-on:click="cancelTimer"
     >pause</div>
   </div>
 </template>
@@ -80,37 +80,39 @@ export default {
   methods:{
     startTimer(){
       this.active = true;
-      const startTime = Date.now();
+      //開始時間
+      let startTime = Date.now();
       this.countDown(startTime);
     },
     countDown(startTime){
-      //経過時間
-      const elapsed_time = Date.now() - startTime;
-    
-      //設定した時間 ミリ秒に直す
-      const setted_time = `${this.setted_hour*3600 + this.setted_minute*60}000`;
-
-      //残り時間を算出
-      const left = new Date(setted_time - elapsed_time);
-      const h = String(left.getHours()-9).padStart(2,'0');
-      const m = String(left.getMinutes()).padStart(2,'0');
-      const s = String(left.getSeconds()).padStart(2,'0');
-      this.time_left = `${h}:${m}:${s}`
       //イベントループ
       this.timeoutId = setTimeout(()=>{
         this.countDown(startTime);
-      },1000)
+        console.log('settimeout')
+      },1000);
 
-      //時間切れでsetTimeoutを止める 1秒誤差あり
-        if(Math.floor((setted_time - elapsed_time)/1000) < 1){
+      if(this.time_left == '00:00:00'){
         clearTimeout(this.timeoutId);
         this.addRecord();
         this.active = false;
       }
 
+    
+      //経過時間
+      let elapsed_time = Date.now() - startTime;
+
+      //設定した時間 ミリ秒に直す
+      let setted_time = `${this.setted_hour*3600 + this.setted_minute*60}000`;
+      //残り時間を算出
+      let left = new Date(setted_time - elapsed_time + 300);
+      let h = String(left.getHours()-9).padStart(2,'0');
+      let m = String(left.getMinutes()).padStart(2,'0');
+      let s = String(left.getSeconds()).padStart(2,'0');
+      this.time_left = `${h}:${m}:${s}`;
     },
     cancelTimer(){
       clearTimeout(this.timeoutId);
+      this.timeoutId = null;
       this.active = false;
     },
     addRecord(){
