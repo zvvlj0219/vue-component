@@ -58,6 +58,7 @@ export default {
       study_time:'00:00:00',
       time_left:'',
       active:false,
+      timeoutId:null
     }
   },
   filters:{
@@ -95,18 +96,18 @@ export default {
       const m = String(left.getMinutes()).padStart(2,'0');
       const s = String(left.getSeconds()).padStart(2,'0');
       this.time_left = `${h}:${m}:${s}`
-
       //イベントループ
-      let timeoutId = setTimeout(()=>{
+      this.timeoutId = setTimeout(()=>{
         this.countDown(startTime);
       },1000)
 
       //時間切れでsetTimeoutを止める 1秒誤差あり
         if(Math.floor((setted_time - elapsed_time)/1000) < 1){
-        clearTimeout(timeoutId);
+        clearTimeout(this.timeoutId);
         this.addRecord();
         this.active = false;
       }
+
     },
     cancelTimer(){
       clearTimeout(this.timeoutId);
