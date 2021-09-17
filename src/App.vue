@@ -6,18 +6,26 @@
     <VslotComponent >
       <template v-slot:hello><p>HelloWorld</p></template>
     </VslotComponent>
+    <hr>
+    <ModalComponent>
+      <template v-slot:modal>
+        <p>v-slotが正常に機能しています</p>
+      </template>
+    </ModalComponent>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue';
-import VslotComponent from './components/VslotComponent.vue';
+import VslotComponent from './components/VslotComponent';
+import ModalComponent from './components/ModalComponent';
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    VslotComponent
+    VslotComponent,
+    ModalComponent
   }
 }
 </script>
