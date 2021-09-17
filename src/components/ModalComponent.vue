@@ -3,7 +3,9 @@
     <div id="open" v-on:click="isModal = !isModal">
       詳細をみる
     </div>
-    <div id="mask" v-bind:class="{hidden :isModal }"></div>
+    <div id="mask" 
+    v-on:click="isModal = !isModal"
+    v-bind:class="{hidden :isModal }"></div>
     <section id="modal" v-bind:class="{hidden :isModal }">
       <slot name="modal">
         <p>v-slotが機能していません v-slotを使わないならタグを消してください</p>
@@ -19,7 +21,7 @@
 export default {
   data(){
     return {
-      isModal:false
+      isModal:true
     }
   }
 }
